@@ -12,6 +12,6 @@ export const models = [
   },
 ] as const;
 
-export const DEFAULT_MODEL_NAME: Model['name'] = models[0].name;
+export const DEFAULT_MODEL_NAME: Model['name'] = models[1].name;
 
 export type Model = (typeof models)[number];

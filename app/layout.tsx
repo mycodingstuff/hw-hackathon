@@ -48,8 +48,16 @@ export default async function RootLayout({
       // prop is necessary to avoid the React hydration mismatch warning.
       // https://github.com/pacocoursey/next-themes?tab=readme-ov-file#with-app
       suppressHydrationWarning
+      style={{ overflowY: 'hidden' }}
     >
       <head>
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.5.0/remixicon.css"
+          integrity="sha512-6p+GTq7fjTHD/sdFPWHaFoALKeWOU9f9MPBoPnvJEWBkGS4PKVVbCpMps6IXnTiXghFbxlgDE8QRHc3MU91lJg=="
+          crossOrigin="anonymous"
+          referrerPolicy="no-referrer"
+        />
         <script
           dangerouslySetInnerHTML={{
             __html: THEME_COLOR_SCRIPT,

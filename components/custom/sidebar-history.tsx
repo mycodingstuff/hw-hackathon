@@ -150,41 +150,48 @@ export function SidebarHistory({ user }: { user: User | undefined }) {
         <SidebarGroupContent>
           <SidebarMenu>
             {history &&
-              history.map((chat) => (
-                <SidebarMenuItem key={chat.id}>
-                  <SidebarMenuButton asChild isActive={chat.id === id}>
-                    <Link
-                      href={`/chat/${chat.id}`}
-                      onClick={() => setOpenMobile(false)}
-                    >
-                      <span>{getTitleFromChat(chat)}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                  <DropdownMenu modal={true}>
-                    <DropdownMenuTrigger asChild>
-                      <SidebarMenuAction
-                        className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
-                        showOnHover={chat.id !== id}
+              history.map((chat) => {
+                const info = getTitleFromChat(chat);
+                return (
+                  <SidebarMenuItem key={chat.id}>
+                    <SidebarMenuButton asChild isActive={chat.id === id}>
+                      <Link
+                        href={`/chat/${chat.id}`}
+                        onClick={() => setOpenMobile(false)}
                       >
-                        <MoreHorizontalIcon />
-                        <span className="sr-only">More</span>
-                      </SidebarMenuAction>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent side="bottom" align="end">
-                      <DropdownMenuItem
-                        className="text-destructive focus:bg-destructive/15 focus:text-destructive"
-                        onSelect={() => {
-                          setDeleteId(chat.id);
-                          setShowDeleteDialog(true);
-                        }}
-                      >
-                        <TrashIcon />
-                        <span>Delete</span>
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </SidebarMenuItem>
-              ))}
+                        <div className='text-ellipsis'>
+                          <span className='text-sm'>{info.what}</span>
+                          {' '}
+                          <span className="text-xs text-zinc-600">{info.when}</span>
+                        </div>
+                      </Link>
+                    </SidebarMenuButton>
+                    <DropdownMenu modal={true}>
+                      <DropdownMenuTrigger asChild>
+                        <SidebarMenuAction
+                          className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+                          showOnHover={chat.id !== id}
+                        >
+                          <MoreHorizontalIcon />
+                          <span className="sr-only">More</span>
+                        </SidebarMenuAction>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent side="bottom" align="end">
+                        <DropdownMenuItem
+                          className="text-destructive focus:bg-destructive/15 focus:text-destructive"
+                          onSelect={() => {
+                            setDeleteId(chat.id);
+                            setShowDeleteDialog(true);
+                          }}
+                        >
+                          <TrashIcon />
+                          <span>Delete</span>
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </SidebarMenuItem>
+                );
+              })}
           </SidebarMenu>
         </SidebarGroupContent>
       </SidebarGroup>

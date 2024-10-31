@@ -17,20 +17,8 @@ import { ArrowUpIcon, PaperclipIcon, StopIcon } from './icons';
 import { PreviewAttachment } from './preview-attachment';
 import useWindowSize from './use-window-size';
 import { Button } from '../ui/button';
+import { RemixIcon } from '../ui/remix-icon';
 import { Textarea } from '../ui/textarea';
-
-const suggestedActions = [
-  {
-    title: 'What is the weather',
-    label: 'in San Francisco?',
-    action: 'What is the weather in San Francisco?',
-  },
-  {
-    title: "Answer like I'm 5,",
-    label: 'why is the sky blue?',
-    action: "Answer like I'm 5, why is the sky blue?",
-  },
-];
 
 export function MultimodalInput({
   input,
@@ -79,8 +67,11 @@ export function MultimodalInput({
 
   const handleInput = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInput(event.target.value);
-    adjustHeight();
   };
+
+  useEffect(() => {
+    adjustHeight();
+  }, [input]);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [uploadQueue, setUploadQueue] = useState<Array<string>>([]);
@@ -96,6 +87,17 @@ export function MultimodalInput({
       textareaRef.current?.focus();
     }
   }, [attachments, handleSubmit, setAttachments, width]);
+
+  useEffect(() => {
+    if (messages.length === 0 && attachments.length > 0) {
+      handleSubmit(undefined, {
+        experimental_attachments: attachments,
+        allowEmptySubmit: true,
+      });
+
+      setAttachments([]);
+    }
+  }, [attachments, handleSubmit, messages.length, setAttachments]);
 
   const uploadFile = async (file: File) => {
     const formData = new FormData();
@@ -153,39 +155,23 @@ export function MultimodalInput({
 
   return (
     <div className="relative w-full flex flex-col gap-4">
-      {messages.length === 0 &&
-        attachments.length === 0 &&
-        uploadQueue.length === 0 && (
-          <div className="grid sm:grid-cols-2 gap-2 w-full">
-            {suggestedActions.map((suggestedAction, index) => (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 20 }}
-                transition={{ delay: 0.05 * index }}
-                key={index}
-                className={index > 1 ? 'hidden sm:block' : 'block'}
-              >
-                <Button
-                  variant="ghost"
-                  onClick={async () => {
-                    append({
-                      role: 'user',
-                      content: suggestedAction.action,
-                    });
-                  }}
-                  className="text-left border rounded-xl px-4 py-3.5 text-sm flex-1 gap-1 sm:flex-col w-full h-auto justify-start items-start"
-                >
-                  <span className="font-medium">{suggestedAction.title}</span>
-                  <span className="text-muted-foreground">
-                    {suggestedAction.label}
-                  </span>
-                </Button>
-              </motion.div>
-            ))}
-          </div>
-        )}
-
+      {isLoading && messages.length > 0 ? (
+        <>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="absolute top-0 left-0 right-0 bottom-0 z-50 bg-background bg-opacity-90 flex flex-col items-center justify-center"
+          >
+            <RemixIcon
+              name="loader-4-line"
+              className="text-5xl text-primary animate-spin"
+            />
+            <span className="mt-2">Processing and your request...</span>
+          </motion.div>
+        </>
+      ) : undefined}
       <input
         type="file"
         className="fixed -top-4 -left-4 size-0.5 opacity-0 pointer-events-none"
@@ -194,6 +180,25 @@ export function MultimodalInput({
         onChange={handleFileChange}
         tabIndex={-1}
       />
+
+      {messages.length === 0 ? (
+        <div
+          onClick={(event) => {
+            event.preventDefault();
+            fileInputRef.current?.click();
+          }}
+          className="relative w-full flex flex-col items-center justify-center cursor-pointer"
+        >
+          <RemixIcon
+            name="add-line"
+            className="text-5xl bg-muted rounded-full p-6 mb-5"
+          />
+          <span>
+            What are you eating, take a picture so I can help you based on your
+            profile 🤓
+          </span>
+        </div>
+      ) : undefined}
 
       {(attachments.length > 0 || uploadQueue.length > 0) && (
         <div className="flex flex-row gap-2 overflow-x-scroll">
@@ -215,60 +220,66 @@ export function MultimodalInput({
         </div>
       )}
 
-      <Textarea
-        ref={textareaRef}
-        placeholder="Send a message..."
-        value={input}
-        onChange={handleInput}
-        className="min-h-[24px] overflow-hidden resize-none rounded-xl p-4 focus-visible:ring-0 focus-visible:ring-offset-0 text-base bg-muted border-none"
-        rows={3}
-        onKeyDown={(event) => {
-          if (event.key === 'Enter' && !event.shiftKey) {
-            event.preventDefault();
+      {messages.length > 0 ? (
+        <>
+          <Textarea
+            ref={textareaRef}
+            placeholder="Send a message..."
+            value={input.startsWith('Act like a nutritionist') ? '' : input}
+            onChange={handleInput}
+            className="min-h-[24px] overflow-hidden resize-none rounded-xl p-4 focus-visible:ring-0 focus-visible:ring-offset-0 text-base bg-muted border-none"
+            rows={3}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
 
-            if (isLoading) {
-              toast.error('Please wait for the model to finish its response!');
-            } else {
-              submitForm();
-            }
-          }
-        }}
-      />
+                if (isLoading) {
+                  toast.error(
+                    'Please wait for the model to finish its response!'
+                  );
+                } else {
+                  submitForm();
+                }
+              }
+            }}
+          />
 
-      {isLoading ? (
-        <Button
-          className="rounded-full p-1.5 h-fit absolute bottom-2 right-2 m-0.5"
-          onClick={(event) => {
-            event.preventDefault();
-            stop();
-          }}
-        >
-          <StopIcon size={14} />
-        </Button>
-      ) : (
-        <Button
-          className="rounded-full p-1.5 h-fit absolute bottom-2 right-2 m-0.5"
-          onClick={(event) => {
-            event.preventDefault();
-            submitForm();
-          }}
-          disabled={input.length === 0 || uploadQueue.length > 0}
-        >
-          <ArrowUpIcon size={14} />
-        </Button>
-      )}
+          {isLoading ? (
+            <Button
+              className="rounded-full p-1.5 h-fit absolute bottom-2 right-2 m-0.5"
+              onClick={(event) => {
+                event.preventDefault();
+                stop();
+              }}
+            >
+              <StopIcon size={14} />
+            </Button>
+          ) : (
+            <Button
+              className="rounded-full p-1.5 h-fit absolute bottom-2 right-2 m-0.5"
+              onClick={(event) => {
+                event.preventDefault();
+                submitForm();
+              }}
+              disabled={input.length === 0 || uploadQueue.length > 0}
+            >
+              <ArrowUpIcon size={14} />
+            </Button>
+          )}
 
-      <Button
-        className="rounded-full p-1.5 h-fit absolute bottom-2 right-10 m-0.5 dark:border-zinc-700"
-        onClick={(event) => {
-          event.preventDefault();
-          fileInputRef.current?.click();
-        }}
-        variant="outline"
-        disabled={isLoading}
-      >
-        <PaperclipIcon size={14} />
-      </Button>
+          <Button
+            className="rounded-full p-1.5 h-fit absolute bottom-2 right-10 m-0.5 dark:border-zinc-700"
+            onClick={(event) => {
+              event.preventDefault();
+              fileInputRef.current?.click();
+            }}
+            variant="outline"
+            disabled={isLoading}
+          >
+            <PaperclipIcon size={14} />
+          </Button>
+        </>
+      ) : undefined}
     </div>
   );
 }

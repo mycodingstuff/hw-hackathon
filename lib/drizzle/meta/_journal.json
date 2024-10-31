@@ -15,6 +15,13 @@
       "when": 1730305168442,
       "tag": "0001_jittery_ultimatum",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1730335635896,
+      "tag": "0002_noisy_red_shift",
+      "breakpoints": true
     }
   ]
 }

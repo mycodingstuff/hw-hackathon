@@ -2,7 +2,7 @@ import { CoreMessage } from 'ai';
 import { cookies } from 'next/headers';
 import { notFound } from 'next/navigation';
 
-import { auth } from '@/app/(auth)/auth';
+import { auth, ExtendedSession } from '@/app/(auth)/auth';
 import { Chat as PreviewChat } from '@/components/custom/chat';
 import { getChatById } from '@/db/queries';
 import { Chat } from '@/db/schema';
@@ -24,7 +24,7 @@ export default async function Page(props: { params: Promise<any> }) {
     messages: convertToUIMessages(chatFromDb.messages as Array<CoreMessage>),
   };
 
-  const session = await auth();
+  const session = await auth() as ExtendedSession;
 
   if (!session || !session.user) {
     return notFound();
@@ -44,6 +44,7 @@ export default async function Page(props: { params: Promise<any> }) {
       id={chat.id}
       initialMessages={chat.messages}
       selectedModelName={selectedModelName}
+      session={session}
     />
   );
 }

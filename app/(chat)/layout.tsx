@@ -1,6 +1,7 @@
 import { cookies } from 'next/headers';
 
 import { AppSidebar } from '@/components/custom/app-sidebar';
+import { HealthDataModal } from '@/components/custom/health-data-modal';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 
 import { auth } from '../(auth)/auth';
@@ -15,6 +16,7 @@ export default async function Layout({
 
   return (
     <SidebarProvider defaultOpen={!isCollapsed}>
+      <HealthDataModal user={session?.user} />
       <AppSidebar user={session?.user} />
       <SidebarInset>{children}</SidebarInset>
     </SidebarProvider>

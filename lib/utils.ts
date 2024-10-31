@@ -4,11 +4,11 @@ import {
   generateId,
   Message,
   ToolInvocation,
-} from "ai";
-import { clsx, type ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
+} from 'ai';
+import { clsx, type ClassValue } from 'clsx';
+import { twMerge } from 'tailwind-merge';
 
-import { Chat } from "@/db/schema";
+import { Chat } from '@/db/schema';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -24,7 +24,7 @@ export const fetcher = async (url: string) => {
 
   if (!res.ok) {
     const error = new Error(
-      "An error occurred while fetching the data.",
+      'An error occurred while fetching the data.'
     ) as ApplicationError;
 
     error.info = await res.json();
@@ -37,16 +37,16 @@ export const fetcher = async (url: string) => {
 };
 
 export function getLocalStorage(key: string) {
-  if (typeof window !== "undefined") {
-    return JSON.parse(localStorage.getItem(key) || "[]");
+  if (typeof window !== 'undefined') {
+    return JSON.parse(localStorage.getItem(key) || '[]');
   }
   return [];
 }
 
 export function generateUUID(): string {
-  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
     const r = (Math.random() * 16) | 0;
-    const v = c === "x" ? r : (r & 0x3) | 0x8;
+    const v = c === 'x' ? r : (r & 0x3) | 0x8;
     return v.toString(16);
   });
 }
@@ -64,13 +64,13 @@ function addToolMessageToChat({
         ...message,
         toolInvocations: message.toolInvocations.map((toolInvocation) => {
           const toolResult = toolMessage.content.find(
-            (tool) => tool.toolCallId === toolInvocation.toolCallId,
+            (tool) => tool.toolCallId === toolInvocation.toolCallId
           );
 
           if (toolResult) {
             return {
               ...toolInvocation,
-              state: "result",
+              state: 'result',
               result: toolResult.result,
             };
           }
@@ -85,28 +85,28 @@ function addToolMessageToChat({
 }
 
 export function convertToUIMessages(
-  messages: Array<CoreMessage>,
+  messages: Array<CoreMessage>
 ): Array<Message> {
   return messages.reduce((chatMessages: Array<Message>, message) => {
-    if (message.role === "tool") {
+    if (message.role === 'tool') {
       return addToolMessageToChat({
         toolMessage: message as CoreToolMessage,
         messages: chatMessages,
       });
     }
 
-    let textContent = "";
+    let textContent = '';
     let toolInvocations: Array<ToolInvocation> = [];
 
-    if (typeof message.content === "string") {
+    if (typeof message.content === 'string') {
       textContent = message.content;
     } else if (Array.isArray(message.content)) {
       for (const content of message.content) {
-        if (content.type === "text") {
+        if (content.type === 'text') {
           textContent += content.text;
-        } else if (content.type === "tool-call") {
+        } else if (content.type === 'tool-call') {
           toolInvocations.push({
-            state: "call",
+            state: 'call',
             toolCallId: content.toolCallId,
             toolName: content.toolName,
             args: content.args,
@@ -126,13 +126,47 @@ export function convertToUIMessages(
   }, []);
 }
 
-export function getTitleFromChat(chat: Chat) {
-  const messages = convertToUIMessages(chat.messages as Array<CoreMessage>);
-  const firstMessage = messages[0];
+function formatDate(date: Date): string {
+  const now = new Date();
+  const isToday = date.toDateString() === now.toDateString();
+  const isYesterday =
+    new Date(now.getTime() - 86400000).toDateString() === date.toDateString();
 
-  if (!firstMessage) {
-    return "Untitled";
+  const timeFormatter = new Intl.DateTimeFormat('en-US', {
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true,
+  });
+
+  const dateFormatter = new Intl.DateTimeFormat('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
+
+  if (isToday) {
+    return `Today at ${timeFormatter.format(date)}`;
+  } else if (isYesterday) {
+    return `Yesterday at ${timeFormatter.format(date)}`;
+  } else {
+    return dateFormatter.format(date);
+  }
+}
+function extractMealName(message: string): string | null {
+  if (!message) {
+    return null;
   }
 
-  return firstMessage.content;
+  const match = message.match(/\*\*Should I eat this\?\s*(.+?)\*\*/);
+  return match ? match[1].trim() : null;
+}
+
+export function getTitleFromChat(chat: Chat) {
+  const messages = convertToUIMessages(chat.messages as Array<CoreMessage>);
+  const mealName = extractMealName(messages[1].content);
+
+  return {
+    when: formatDate(new Date(chat.createdAt)),
+    what: `${mealName ? mealName : ''}`,
+  };
 }

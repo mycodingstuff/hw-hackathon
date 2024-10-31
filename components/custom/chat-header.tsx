@@ -1,7 +1,6 @@
 import { Plus } from 'lucide-react';
 import Link from 'next/link';
 
-import { ModelSelector } from '@/components/custom/model-selector';
 import { SidebarToggle } from '@/components/custom/sidebar-toggle';
 import { Button } from '@/components/ui/button';
 import { BetterTooltip } from '@/components/ui/tooltip';
@@ -26,11 +25,7 @@ export function ChatHeader({
             <span className="md:sr-only">New Chat</span>
           </Link>
         </Button>
-      </BetterTooltip>
-      <ModelSelector
-        selectedModelName={selectedModelName}
-        className="order-1 md:order-2"
-      />
+      </BetterTooltip>      
     </header>
   );
 }

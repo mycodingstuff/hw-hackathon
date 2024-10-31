@@ -50,22 +50,19 @@ export const healthData = pgTable('health_data', {
   supplements: varchar('supplements', { length: 255 }), // Comma-separated list
   physicalActivityLevel: varchar('physical_activity_level', { length: 50 }),
   exerciseFrequencyPerWeek: integer('exercise_frequency_per_week'),
-  sleepHours: decimal('sleep_hours'),
-  stressLevel: varchar('stress_level', { length: 50 }),
-  mealSchedule: varchar('meal_schedule', { length: 255 }), // Comma-separated list
+  sleepHours: decimal('sleep_hours'),  
+  breakFastSchedule: varchar('breakFastSchedule', { length: 255 }), 
+  lunchSchedule: varchar('lunchSchedule', { length: 255 }),
+  dinnerSchedule: varchar('dinnerSchedule', { length: 255 }),
   mealsPerDay: integer('meals_per_day'),
   frequentFoods: varchar('frequent_foods', { length: 255 }), // Comma-separated list
   alcoholFrequency: varchar('alcohol_frequency', { length: 50 }),
-  foodPreferences: varchar('food_preferences', { length: 255 }), // Comma-separated list
-  portionControl: boolean('portion_control'),
-  weightGoal: varchar('weight_goal', { length: 50 }),
-  bodyCompositionGoal: varchar('body_composition_goal', { length: 50 }),
+  foodPreferences: varchar('food_preferences', { length: 255 }), // Comma-separated list  
+  weightGoal: varchar('weight_goal', { length: 50 }),  
   specificHealthGoals: varchar('specific_health_goals', { length: 255 }), // Comma-separated list
   waterIntakeLiters: decimal('water_intake_liters'),
   otherBeverages: varchar('other_beverages', { length: 255 }), // Comma-separated list
-  digestiveIssues: varchar('digestive_issues', { length: 255 }), // Comma-separated list
-  energyLevel: varchar('energy_level', { length: 50 }),
-  appetite: varchar('appetite', { length: 50 }),
+  digestiveIssues: varchar('digestive_issues', { length: 255 }), // Comma-separated list    
 });
 
 export type HealthData = InferSelectModel<typeof healthData>;

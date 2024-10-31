@@ -1,0 +1,287 @@
+{
+  "id": "38e3b975-29e7-4085-8822-cfb87c1b05ab",
+  "prevId": "e672ce70-fbf9-4282-bc52-6d50a7a8c4a0",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.Chat": {
+      "name": "Chat",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "messages": {
+          "name": "messages",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "Chat_userId_User_id_fk": {
+          "name": "Chat_userId_User_id_fk",
+          "tableFrom": "Chat",
+          "tableTo": "User",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.health_data": {
+      "name": "health_data",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "userId": {
+          "name": "userId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "age": {
+          "name": "age",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "gender": {
+          "name": "gender",
+          "type": "varchar(10)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "weight_kg": {
+          "name": "weight_kg",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "height_cm": {
+          "name": "height_cm",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "bmi": {
+          "name": "bmi",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "waist_circumference": {
+          "name": "waist_circumference",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "hip_circumference": {
+          "name": "hip_circumference",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "chronic_conditions": {
+          "name": "chronic_conditions",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "allergies": {
+          "name": "allergies",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "medications": {
+          "name": "medications",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "supplements": {
+          "name": "supplements",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "physical_activity_level": {
+          "name": "physical_activity_level",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "exercise_frequency_per_week": {
+          "name": "exercise_frequency_per_week",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "sleep_hours": {
+          "name": "sleep_hours",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "breakFastSchedule": {
+          "name": "breakFastSchedule",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "lunchSchedule": {
+          "name": "lunchSchedule",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "dinnerSchedule": {
+          "name": "dinnerSchedule",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "meals_per_day": {
+          "name": "meals_per_day",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "frequent_foods": {
+          "name": "frequent_foods",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "alcohol_frequency": {
+          "name": "alcohol_frequency",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "food_preferences": {
+          "name": "food_preferences",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "weight_goal": {
+          "name": "weight_goal",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "specific_health_goals": {
+          "name": "specific_health_goals",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "water_intake_liters": {
+          "name": "water_intake_liters",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "other_beverages": {
+          "name": "other_beverages",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "digestive_issues": {
+          "name": "digestive_issues",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "health_data_userId_User_id_fk": {
+          "name": "health_data_userId_User_id_fk",
+          "tableFrom": "health_data",
+          "tableTo": "User",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.User": {
+      "name": "User",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "email": {
+          "name": "email",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "password": {
+          "name": "password",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "sequences": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}

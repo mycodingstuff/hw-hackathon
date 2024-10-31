@@ -1,7 +1,13 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 
-export const Overview = () => {
+import { ExtendedSession } from '@/app/(auth)/auth';
+
+interface OverviewProps {
+  session: ExtendedSession;
+}
+
+export const Overview = ({ session }: OverviewProps) => {
   return (
     <motion.div
       key="overview"
@@ -12,12 +18,12 @@ export const Overview = () => {
       transition={{ delay: 0.5 }}
     >
       <div className="rounded-xl p-6 flex flex-col gap-8 leading-relaxed text-center max-w-xl">
-        Welcome, lets get started with your medical informacion.
-        <div className="flex flex-col gap-4">
-          <Link href="/custom">
-            <span className="btn btn-primary">Get Started</span>
-          </Link>          
-        </div>
+        <Link
+          href={`/profile/${session.user.id}`}
+          className="font-semibold text-gray-800 hover:underline dark:text-zinc-200"
+        >
+          Edit my profile
+        </Link>
       </div>
     </motion.div>
   );
