@@ -2,7 +2,6 @@
 
 import { Attachment, Message } from 'ai';
 import { useChat } from 'ai/react';
-
 import { Session } from 'next-auth';
 import { use, useEffect, useState } from 'react';
 import useSWR from 'swr';
