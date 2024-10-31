@@ -1,0 +1,1 @@
+ALTER TABLE "health_data" ALTER COLUMN "exercise_frequency_per_week" SET DATA TYPE varchar(50);

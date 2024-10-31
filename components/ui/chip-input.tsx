@@ -6,11 +6,14 @@ import { twClassNames } from '@/lib/utils/class-names';
 
 export interface InputProps {
   name: string;
+  value: string;
   formHandler: UseFormReturn<any, any, undefined>;
 }
 
 const ChipInput: React.FC<InputProps> = (props: InputProps) => {
-  const [chips, setChips] = useState<string[]>([]);
+  const [chips, setChips] = useState<string[]>(
+    props.value?.split(',').filter(Boolean) ?? []
+  );
   const [inputValue, setInputValue] = useState<string>('');
 
   const { onChange, ref, name } = props.formHandler.register(props.name);
@@ -32,7 +35,7 @@ const ChipInput: React.FC<InputProps> = (props: InputProps) => {
           name,
         },
         type: 'change',
-      });      
+      });
       setInputValue('');
     }
   };
@@ -50,10 +53,7 @@ const ChipInput: React.FC<InputProps> = (props: InputProps) => {
   };
 
   return (
-    <div
-      className={twClassNames('flex flex-wrap gap-2 items-center')}
-    >
-    
+    <div className={twClassNames('flex flex-wrap gap-2 items-center')}>
       <Input
         value={inputValue}
         onChange={(e) => {
@@ -61,11 +61,10 @@ const ChipInput: React.FC<InputProps> = (props: InputProps) => {
         }}
         onKeyPress={handleKeyPress}
         placeholder="Enter tags, separated by comma"
-        className="flex-1  w-[230px] p-2 border rounded"
-        ref={ref}
+        className="flex-1  w-[230px] p-2 border rounded"        
         name={name}
       />
-        {chips.map((chip, index) => (
+      {chips.map((chip, index) => (
         <Badge
           key={index}
           className="bg-gray-200 text-gray-700 px-3 py-1 rounded-md flex items-center h-8"

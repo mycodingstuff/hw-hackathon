@@ -49,7 +49,7 @@ export const healthData = pgTable('health_data', {
   medications: varchar('medications', { length: 255 }), // Comma-separated list
   supplements: varchar('supplements', { length: 255 }), // Comma-separated list
   physicalActivityLevel: varchar('physical_activity_level', { length: 50 }),
-  exerciseFrequencyPerWeek: integer('exercise_frequency_per_week'),
+  exerciseFrequencyPerWeek: varchar('exercise_frequency_per_week', { length: 50 }),
   sleepHours: decimal('sleep_hours'),  
   breakFastSchedule: varchar('breakFastSchedule', { length: 255 }), 
   lunchSchedule: varchar('lunchSchedule', { length: 255 }),

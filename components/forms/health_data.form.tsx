@@ -37,7 +37,6 @@ type HealthDataFormProps = {
   profileFromDb?: healthDataType;
 };
 
-
 function HealthDataForm(props: HealthDataFormProps) {
   const form = useForm<healthDataType>({
     resolver: zodResolver(healthDataSchema),
@@ -49,7 +48,7 @@ function HealthDataForm(props: HealthDataFormProps) {
       method: 'post',
       body: JSON.stringify(data),
     });
-  
+
     toast.promise(saveHealthData, {
       loading: 'Working on it...',
       success: () => {
@@ -463,15 +462,17 @@ function HealthDataForm(props: HealthDataFormProps) {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
-                        {[0, 1, 2, 3, 4, 5, 6, 7].map((value) => (
-                          <SelectItem
-                            key={value}
-                            value={value.toString()}
-                            className="capitalize"
-                          >
-                            {value}
-                          </SelectItem>
-                        ))}
+                        {['0', '1', '2', '3', '4', '5', '6', '7'].map(
+                          (value) => (
+                            <SelectItem
+                              key={value}
+                              value={value}
+                              className="capitalize"
+                            >
+                              {value}
+                            </SelectItem>
+                          )
+                        )}
                       </SelectGroup>
                     </SelectContent>
                   </Select>
@@ -534,7 +535,11 @@ function HealthDataForm(props: HealthDataFormProps) {
               <FormItem>
                 <FormLabel>Chronic Conditions</FormLabel>
                 <FormControl>
-                  <ChipInput name={field.name} formHandler={form} />
+                  <ChipInput
+                    value={field.value}
+                    name={field.name}
+                    formHandler={form}
+                  />
                 </FormControl>
                 <FormMessage>List any chronic conditions you have.</FormMessage>
               </FormItem>
@@ -547,7 +552,11 @@ function HealthDataForm(props: HealthDataFormProps) {
               <FormItem>
                 <FormLabel>Allergies</FormLabel>
                 <FormControl>
-                  <ChipInput name={field.name} formHandler={form} />
+                  <ChipInput
+                    value={field.value}
+                    name={field.name}
+                    formHandler={form}
+                  />
                 </FormControl>
                 <FormMessage>List any known allergies.</FormMessage>
               </FormItem>
@@ -560,7 +569,11 @@ function HealthDataForm(props: HealthDataFormProps) {
               <FormItem>
                 <FormLabel>Medications</FormLabel>
                 <FormControl>
-                  <ChipInput name={field.name} formHandler={form} />
+                  <ChipInput
+                    value={field.value}
+                    name={field.name}
+                    formHandler={form}
+                  />
                 </FormControl>
                 <FormMessage>
                   List any medications you are currently taking.
@@ -575,7 +588,11 @@ function HealthDataForm(props: HealthDataFormProps) {
               <FormItem>
                 <FormLabel>Supplements</FormLabel>
                 <FormControl>
-                  <ChipInput name={field.name} formHandler={form} />
+                  <ChipInput
+                    value={field.value}
+                    name={field.name}
+                    formHandler={form}
+                  />
                 </FormControl>
                 <FormMessage>
                   List any supplements you regularly use.
@@ -590,7 +607,11 @@ function HealthDataForm(props: HealthDataFormProps) {
               <FormItem>
                 <FormLabel>Frequent Foods</FormLabel>
                 <FormControl>
-                  <ChipInput name={field.name} formHandler={form} />
+                  <ChipInput
+                    value={field.value}
+                    name={field.name}
+                    formHandler={form}
+                  />
                 </FormControl>
                 <FormMessage>List foods you frequently consume.</FormMessage>
               </FormItem>
@@ -603,7 +624,11 @@ function HealthDataForm(props: HealthDataFormProps) {
               <FormItem>
                 <FormLabel>Food Preferences</FormLabel>
                 <FormControl>
-                  <ChipInput name={field.name} formHandler={form} />
+                  <ChipInput
+                    value={field.value}
+                    name={field.name}
+                    formHandler={form}
+                  />
                 </FormControl>
                 <FormMessage>
                   Specify any dietary preferences or restrictions.
@@ -618,7 +643,11 @@ function HealthDataForm(props: HealthDataFormProps) {
               <FormItem>
                 <FormLabel>Specific Health Goals</FormLabel>
                 <FormControl>
-                  <ChipInput name={field.name} formHandler={form} />
+                  <ChipInput
+                    value={field.value}
+                    name={field.name}
+                    formHandler={form}
+                  />
                 </FormControl>
                 <FormMessage>
                   List any specific health goals you want to achieve.
@@ -633,7 +662,11 @@ function HealthDataForm(props: HealthDataFormProps) {
               <FormItem>
                 <FormLabel>Other Beverages</FormLabel>
                 <FormControl>
-                  <ChipInput name={field.name} formHandler={form} />
+                  <ChipInput
+                    value={field.value}
+                    name={field.name}
+                    formHandler={form}
+                  />
                 </FormControl>
                 <FormMessage>
                   List other beverages you regularly consume (e.g., coffee,
@@ -649,7 +682,11 @@ function HealthDataForm(props: HealthDataFormProps) {
               <FormItem>
                 <FormLabel>Digestive Issues</FormLabel>
                 <FormControl>
-                  <ChipInput name={field.name} formHandler={form} />
+                  <ChipInput
+                    value={field.value}
+                    name={field.name}
+                    formHandler={form}
+                  />
                 </FormControl>
                 <FormMessage>
                   List any digestive issues you frequently experience.
