@@ -2,7 +2,7 @@
 
 import { Attachment, Message } from 'ai';
 import { useChat } from 'ai/react';
-import { isEmpty } from 'lodash';
+
 import { Session } from 'next-auth';
 import { use, useEffect, useState } from 'react';
 import useSWR from 'swr';
@@ -13,7 +13,7 @@ import { Message as PreviewMessage } from '@/components/custom/message';
 import { useScrollToBottom } from '@/components/custom/use-scroll-to-bottom';
 import { HealthData } from '@/db/schema';
 import { Model } from '@/lib/model';
-import { fetcher } from '@/lib/utils';
+import { fetcher, isEmptyObject } from '@/lib/utils';
 
 import { MultimodalInput } from './multimodal-input';
 import { Overview } from './overview';
@@ -34,14 +34,6 @@ export function Chat({
       fallbackData: undefined,
       revalidateOnFocus: false,
     });
-
-  useEffect(() => {
-    if (!isEmpty(healthdata) && !isHealthDataLoading) {
-      console.log(healthdata);
-    }
-  }, [healthdata, isHealthDataLoading]);
-
-  
 
   const { messages, handleSubmit, input, setInput, append, isLoading, stop } =
     useChat({
@@ -68,7 +60,6 @@ export function Chat({
         console.error(error);
       },
     });
-    console.log(messages);
 
   const [messagesContainerRef, messagesEndRef] =
     useScrollToBottom<HTMLDivElement>();

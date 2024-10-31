@@ -11,7 +11,6 @@ import {
 import * as LabelPrimitive from '@radix-ui/react-label';
 import { Slot } from '@radix-ui/react-slot';
 import { type VariantProps, cva } from 'class-variance-authority';
-import { isFunction } from 'lodash';
 import * as React from 'react';
 
 import { Label } from './label';
@@ -207,7 +206,7 @@ export const FormMessage = React.forwardRef<
       ref={ref}
       {...props}
     >
-      {resolver && isFunction(resolver)
+      {resolver
         ? resolver(error)
         : error?.type === 'custom' && !children
           ? error.message

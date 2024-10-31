@@ -32,8 +32,7 @@ const ChipInput: React.FC<InputProps> = (props: InputProps) => {
           name,
         },
         type: 'change',
-      });
-      console.log([...chips, trimmedValue].join(','));
+      });      
       setInputValue('');
     }
   };

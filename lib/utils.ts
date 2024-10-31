@@ -170,3 +170,12 @@ export function getTitleFromChat(chat: Chat) {
     what: `${mealName ? mealName : ''}`,
   };
 }
+
+
+export function isEmptyObject(obj: any): boolean {
+  return (
+    obj === null ||
+    obj === undefined ||
+    (typeof obj === 'object' && !Array.isArray(obj) && Object.keys(obj).length === 0)
+  );
+}

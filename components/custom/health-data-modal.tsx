@@ -1,6 +1,5 @@
 'use client';
 
-import { isEmpty } from 'lodash';
 import { usePathname, useRouter } from 'next/navigation';
 import { type User } from 'next-auth';
 import { useEffect, useState } from 'react';
@@ -17,7 +16,7 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { HealthData } from '@/db/schema';
-import { fetcher } from '@/lib/utils';
+import { fetcher, isEmptyObject } from '@/lib/utils';
 
 export function HealthDataModal({ user }: { user: User | undefined }) {
   const router = useRouter();
@@ -37,7 +36,7 @@ export function HealthDataModal({ user }: { user: User | undefined }) {
   }, [pathname, mutate]);
 
   useEffect(() => {
-    if (isEmpty(healthdata) && !isLoading) {
+    if (isEmptyObject(healthdata) && !isLoading) {
       setShowDeleteDialog(true);
     }
   }, [healthdata, isLoading]);
