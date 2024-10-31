@@ -162,7 +162,7 @@ export function MultimodalInput({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="absolute top-0 left-0 right-0 bottom-0 z-50 bg-background bg-opacity-90 flex flex-col items-center justify-center"
+            className="absolute inset-0 z-50 bg-background bg-opacity-90 flex flex-col items-center justify-center"
           >
             <RemixIcon
               name="loader-4-line"
