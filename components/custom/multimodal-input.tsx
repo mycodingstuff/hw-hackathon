@@ -168,7 +168,7 @@ export function MultimodalInput({
               name="loader-4-line"
               className="text-5xl text-primary animate-spin"
             />
-            <span className="mt-2">Processing and your request...</span>
+            <span className="mt-2">Hang tight, processing your request...</span>
           </motion.div>
         </>
       ) : undefined}
